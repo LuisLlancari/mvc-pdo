@@ -13,7 +13,7 @@ if (isset($_POST['operacion'])){
     //En esta ocasión NO enviaremos un objeto JSON, en su lugar
     //el controlador renderizará las filas que necesita <tbody></tbody>
     //echo json_encode($datosObtenidos);
-
+    //este es un comentario
     //PASO 1: Verificar que el objeto contenga datos
     if ($datosObtenidos){
       $numeroFila = 1;
