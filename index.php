@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="es">
 
@@ -25,7 +28,7 @@
             <strong>Inicio de sesion</strong>
           </div>
           <div class="card-body">
-            <form action="">
+            <form action="" autocomplete="off">
               <div class="mb-3">
                 <label for="usuario" class="form-label">Usuario</label>
                 <input type="text" id="usuario" class="form-control form-control-sm" autofocus >
@@ -37,7 +40,7 @@
             </form>
           </div>
           <div class="card-footer text-end">
-            <button type="btn btn-sm" class="btn btn-sm btn-success">Iniciar sesion</button>
+            <button type="btn btn-sm" class="btn btn-sm btn-success" id="iniciar-sesion">Iniciar sesion</button>
           </div>
         </div>
         <!-- fin card-->
@@ -46,7 +49,45 @@
 
     </div>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
 
+      function iniciarSesion(){
+        
+        const usuario =$("#usuario").val();
+        const clave = $("#clave").val();
+
+        if(usuario != "" && clave != ""){
+          $.ajax({
+            url:'controllers/usuario.controller.php',
+            type: 'POST',
+            data: {
+              operacion       : 'login',
+              nombreusuario   : usuario,
+              claveIngresada  : clave
+            },
+            dataType: 'JSON',
+            success: function(result){
+              console.log(result);
+              if (result["status"]){
+              window.location.href = "views/index.php";
+              }else{
+                alert(result["mensaje"]); 
+              }
+            }
+
+          });
+
+        }
+
+      }
+
+      $("#iniciar-sesion").click(iniciarSesion);
+
+    });
+
+  </script>
 </body>
 
 </html>
