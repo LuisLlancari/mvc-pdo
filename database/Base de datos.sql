@@ -8,10 +8,10 @@ CREATE TABLE cursos
 	especialidad 	VARCHAR(70) 	NOT NULL,
 	complejidad 	CHAR(1)			NOT NULL DEFAULT 'B',
 	fechainicio		DATE 				NOT NULL,
-	precio			DECIMAL(7,2)	NOT NULL,
+	precio				DECIMAL(7,2)	NOT NULL,
 	fechacreacion	DATETIME 		NOT NULL DEFAULT NOW(),
 	fechaupdate 	DATETIME 		NULL,
-	estado 			CHAR(1)			NOT NULL DEFAULT '1'
+	estado 				CHAR(1)			NOT NULL DEFAULT '1'
 )ENGINE = INNODB;
 
 INSERT INTO cursos (nombrecurso, especialidad, complejidad, fechainicio, precio) VALUES
