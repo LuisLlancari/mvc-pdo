@@ -48,6 +48,36 @@ if (isset($_POST['operacion'])){
   }
 
 
+
+
+  if($_POST['operacion'] == 'listar'){
+
+    $datosObtenidos = $usuario ->listarUsuarios();
+
+    if($datosObtenidos){
+      $nfilas =1;
+      foreach($datosObtenidos as $usuario){
+
+        echo"
+        <tr>
+        <td>{$nfilas}</td>
+        <td>{$usuario['nombres']}</td>
+        <td>{$usuario['apellidos']}</td>
+        <td>{$usuario['nombreusuario']}</td>
+        <td>{$usuario['nivelacceso']}</td>
+        <td>{$usuario['fecharegistro']}</td>
+        </tr>
+        ";
+        $nfilas++;
+      }
+    }
+  }
+
+
+
+
+
+
 }
 
 if(isset($_GET['operacion'])){
@@ -58,4 +88,6 @@ if(isset($_GET['operacion'])){
     header('Location:../index.php');
 
   }
+
+
 }

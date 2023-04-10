@@ -71,7 +71,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] == false){
         <a href="../controllers/usuario.controller.php?operacion=finalizar">Cerrar sesion</a>       
       </div>
     </div>
-  </div> <!-- Fin de container -->
+  </div> 
+  <!-- Fin de container -->
 
   <!-- Zona de modales -->
   <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->

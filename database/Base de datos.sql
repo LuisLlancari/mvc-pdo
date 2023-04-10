@@ -397,7 +397,7 @@ CREATE TABLE usuarios
 	CONSTRAINT uk_nombreusuario_usa UNIQUE (nombreusuario)
 )ENGINE =INNODB;
 
-select * from usuarios
+SELECT * FROM usuarios
 
 INSERT INTO usuarios (nombreusuario, claveacceso, apellidos, nombres) VALUES
 	('Luis','123456','LLancari','Luis'),
@@ -405,21 +405,50 @@ INSERT INTO usuarios (nombreusuario, claveacceso, apellidos, nombres) VALUES
 
 
 -- AcTUALIZANDO por clave
-update usuarios set
+UPDATE usuarios SET
 	claveacceso = '$2y$10$f3IVX.JWCDDwLQd/Mng27Of6LxzwOVwBflXRI2wfRBQOMiJf91x06'
-	where idusuario = 1;
+	WHERE idusuario = 1;
 	
 	UPDATE usuarios SET
 		claveacceso = '$2y$10$f3IVX.JWCDDwLQd/Mng27Of6LxzwOVwBflXRI2wfRBQOMiJf91x06'
 		WHERE idusuario = 2;	
 	
-delimiter$$
-create procedure spu_usuarios_login(in nombreusuario_ varchar(30))
-begin
-	select  idusuario, nombreusuario, claveacceso, apellidos,
+DELIMITER$$
+CREATE PROCEDURE spu_usuarios_login(IN nombreusuario_ VARCHAR(30))
+BEGIN
+	SELECT  idusuario, nombreusuario, claveacceso, apellidos,
 				nombres,nivelacceso
-		from usuarios
-		where nombreusuario = nombreusuario_ and estado = '1';
+		FROM usuarios
+		WHERE nombreusuario = nombreusuario_ AND estado = '1';
+END$$
+
+CALL spu_usuarios_login('Luis')
+
+-- CREANDO PROCEDIMIENTO ALMACENADOS PARA USUARIOS
+
+delimiter$$
+create procedure spu_listar_usuarios()
+begin
+	select idusuario,nombreusuario, apellidos, nombres,nivelacceso, fecharegistro
+	from usuarios where estado = '1';
 end$$
 
-call spu_usuarios_login('Luis')
+call spu_listar_usuarios()
+
+DELIMITER $$
+CREATE PROCEDURE spu_usuarios_registrar
+(
+	IN _nombreusuario	 VARCHAR(30),
+	IN _claveacceso	 VARCHAR(90),
+	IN _apellidos		 VARCHAR(30),
+	IN _nombres			 varchar(30),
+	IN _nivelacceso	 char(1)
+	
+)
+BEGIN
+	INSERT INTO cursos (nombreusario, claveacceso, apellidos, nombres, nivelacceso) VALUES
+		(_nombrecurso, _claveacceso, _apellidos, _nombres, _nivelacceso);
+END $$
+
+
+

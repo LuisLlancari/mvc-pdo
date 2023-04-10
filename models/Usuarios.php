@@ -22,6 +22,20 @@ class Usuario extends Conexion{
     }
   }
 
+  public function listarUsuarios(){
+
+    try {
+      $consulta=$this->accesoBD->prepare("CALL spu_listar_usuarios()");
+      
+      $consulta->execute();
+      return $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (Exeption $e) {
+      die($e->getMessage());
+    }
+
+
+  }
 
 
 
