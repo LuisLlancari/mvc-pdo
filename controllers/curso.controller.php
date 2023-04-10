@@ -64,4 +64,20 @@ if (isset($_POST['operacion'])){
     echo json_encode($registro);
   }
 
+  if ($_POST['operacion'] == 'actualizar'){
+
+    $datosForm = [
+      "idcurso"       => $_POST['idcurso'],
+      "nombrecurso"   => $_POST['nombrecurso'],
+      "especialidad"  => $_POST['especialidad'],
+      "complejidad"   => $_POST['complejidad'],
+      "fechainicio"   => $_POST['fechainicio'],
+      "precio"        => $_POST['precio'],
+    ];
+
+    //paso 2: Enviar arreglo con el prarmetro
+    $curso->actualizarCurso($datosForm);
+
+  }
+
 }
