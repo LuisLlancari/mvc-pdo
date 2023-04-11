@@ -38,7 +38,32 @@ class Usuario extends Conexion{
   }
 
 
+  public function registrarUsuarios($datos = []){
+    try {
+      $consulta = $this->accesoBD->prepare("CALL spu_usuarios_registrar(?,?,?,?,?)");
+      $consulta->execute(
+        array(
+          $datos["nombreusuario"],
+          $datos["claveacceso"],
+          $datos["apellidos"],
+          $datos["nombres"],
+          $datos["nivelacceso"]
+      )
+    );
 
+    } catch (Exception $e) {
+      die($e->getMessage());
+    }
+  }
 
+  public function eliminarUsuario($idusuario= 0){
+    try {
+      $consulta = $this->accesoBD->prepare("CALL spu_usuarios_eliminar(?)");
+      $consulta->execute(array($idusuario));
+    
+    } catch (Exeption $e) {
+      die($e->getMessage());
+    }
+  }
 
 }

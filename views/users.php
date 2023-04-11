@@ -12,6 +12,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
 </head>
 
 <body>
@@ -24,7 +26,7 @@
           </div>
           <div class="col-md-6 text-end">
             <button class="btn btn-success btn-sm" id="abrir-modal" data-bs-toggle="modal" data-bs-target="#modal-registro-usuario">
-              <i class="bi bi-plus-circle-fill"></i> boton
+              <i class="bi bi-plus-circle-fill"></i> Agregar Usuarios
             </button>
           </div>
         </div>
@@ -43,9 +45,9 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Nombres</th>
+              <th>Nombres Usuarios</th>
               <th>Apellidos</th>
-              <th>Usuario</th>
+              <th>Nombres</th>
               <th>Nivel acceso</th>
               <th>fecha registro</th>
               <th>Operaciones</th>
@@ -63,7 +65,51 @@
       </div>
     </div>
   </div> 
+  <!--formualrio-->
+  <div class="modal fade" id="modal-registro-usuario" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary text-light">
+          <h5 class="modal-title" id="modal-titulo">Registro de usuario</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" >
 
+          <form action="" id="formulario-usuario">
+            <div class="mb-3">
+              <label for="nombreusuario" class="form-label">Nombre usuario</label>
+              <input type="text" class="form-control form-control-sm" id="nombreusuario">
+            </div>
+            <div class="mb-3">
+              <label for="claveacceso" class="form-label">Ingrese clave</label>
+              <input type="text" class="form-control form-control-sm" id="claveacceso">
+            </div>
+            <div class="mb-3">
+              <label for="nombres" class="form-label">Nombres</label>
+              <input type="text" class="form-control form-control-sm" id="nombres">
+            </div>
+            <div class="mb-3">
+              <label for="apellidos" class="form-label">Apellidos </label>
+              <input type="text" class="form-control form-control-sm" id="apellidos">
+            </div>
+            <div class="mb-3">
+              <label for="nivelacceso" class="form-label">Nivel de acceso</label>
+              <select id="nivelacceso" class="form-select form-select-sm">
+                <option value="">Seleccione</option>
+                <option value="A">Administrador</option>
+                <option value="I">Invitado</option>
+              </select>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class=" btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary btn-sm" id="guardar-usuario">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -80,6 +126,10 @@
 
   <script>
     $(document).ready(function(){
+
+      let datosNuevos = true;
+      let idusuarioactualizar= -1;
+
       function mostrarUsuarios(){
         $.ajax({
           url: '../controllers/usuario.controller.php',
@@ -92,7 +142,78 @@
           }
         });
       }
+
+
+
+      function registrarUsuario(){
+        //pendiente validadar
+        if (confirm("¿Está seguro de salvar los datos?")){
+
+          //crear objeto conteniendo los datos a guardar
+
+          let datos ={
+            operacion     : 'registrar',
+            idusuario     : idusuarioactualizar,
+            nombreusuario : $("#nombreusuario").val(),
+            claveacceso   : $("#claveacceso").val(),
+            apellidos     : $("#apellidos").val(),
+            nombres       : $("#nombres").val(),
+            nivelacceso   : $("#nivelacceso").val()
+
+          };
+
+
+
+          $.ajax({
+            url: '../controllers/usuario.controller.php',
+            type: 'POST',
+            data: datos,
+            success: function(result){
+              if (result == ""){
+                // reiniciar el formulario
+                $("#formulario-usuario")[0].reset();
+
+                //actualizar la tabla
+                mostrarUsuarios();
+                //cerrar el modal
+
+                $("#modal-registro-usuario").modal('hide');
+              }
+            }
+          });
+        }
+      }
+
+
+      function abrirModal(){
+        datosNuevos = true; //variable de tipo bandera
+        $("#modal-titulo").html("Registro de Usuarios")
+        $("#formulario-usuario")[0].reset();
+      }
+      $("#guardar-usuario").click(registrarUsuario);
+      $("#abrir-modal").click(abrirModal);
       
+
+      $("#tabla-cursos tbody").on("click", ".eliminar", function (){
+        const idusuarioEliminar =$(this).data("idusuario");
+        if (confirm("Estas seguro de proceder? ")){ 
+          $.ajax({
+
+            url: '../controllers/usuario.controller.php',
+            type: 'POST',
+            data: {
+              operacion     :'eliminar',
+              idusuario     : idcursoEliminar
+            },
+            success: function(result){
+              if (result == ""){
+                mostrarUsuarios();
+              }
+            }
+            
+          });
+         }
+      });
 
 
       mostrarUsuarios();

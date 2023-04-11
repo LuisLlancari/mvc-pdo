@@ -202,6 +202,9 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] == false){
         }
       }
 
+
+
+      
       function abrirModal(){
         datosNuevos = true; //variable de tipo bandera
         $("#modal-titulo").html("Registro de cursos")

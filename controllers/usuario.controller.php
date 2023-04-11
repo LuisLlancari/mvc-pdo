@@ -61,11 +61,15 @@ if (isset($_POST['operacion'])){
         echo"
         <tr>
         <td>{$nfilas}</td>
-        <td>{$usuario['nombres']}</td>
-        <td>{$usuario['apellidos']}</td>
         <td>{$usuario['nombreusuario']}</td>
+        <td>{$usuario['apellidos']}</td>  
+        <td>{$usuario['nombres']}</td>
         <td>{$usuario['nivelacceso']}</td>
         <td>{$usuario['fecharegistro']}</td>
+        <td>
+           <a href='#' data-idusuario='{$usuario['idusuario']}' class='btn btn-danger btn-sm eliminar'><i class='bi bi-trash3'></i></a>
+           <a href='#' data-idusuario='{$usuario['idusuario']}' class='btn btn-info btn-sm editar'><i class='bi bi-pencil-fill'></i></a>
+        </td>
         </tr>
         ";
         $nfilas++;
@@ -74,9 +78,23 @@ if (isset($_POST['operacion'])){
   }
 
 
+  if($_POST['operacion'] == 'registrar'){
+    $datosForm = [
+      "nombreusuario" => $_POST['nombreusuario'],
+      "claveacceso"   => $_POST['claveacceso'],
+      "apellidos"     => $_POST['apellidos'],
+      "nombres"       => $_POST['nombres'],
+      "nivelacceso"   => $_POST['nivelacceso']
 
+    ];
 
+    $usuario->registrarUsuarios($datosForm);
 
+  }
+
+  if($_POST['operacion'] == 'eliminar'){
+    $usuario->eliminarUsuario($_POST['idusuario']);
+  }
 
 }
 
